@@ -8,37 +8,36 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 /**
- * Created by joshuagoldberg on 7/25/16.
+ * Created by joshuagoldberg on 7/27/16.
  */
-public class QuickCardRecyclerAdapter extends RecyclerView.Adapter<QuickCardViewHolder> {
+public class LongCardRecyclerAdapter extends RecyclerView.Adapter<LongCardViewHolder> {
 
     ArrayList<InventoryItem> mInventoryList;
 
-    public QuickCardRecyclerAdapter(ArrayList<InventoryItem> inventoryList) {
+    public LongCardRecyclerAdapter(ArrayList<InventoryItem> inventoryList) {
         mInventoryList = inventoryList;
     }
 
     @Override
-    public QuickCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LongCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View parentView = inflater.inflate(R.layout.quick_card, parent, false);
-        QuickCardViewHolder quickCardViewHolder = new QuickCardViewHolder(parentView);
-        return quickCardViewHolder;
+        View parentView = inflater.inflate(R.layout.card_long, parent, false);
+        LongCardViewHolder longCardViewHolder = new LongCardViewHolder(parentView);
+        return longCardViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(QuickCardViewHolder holder, int position) {
+    public void onBindViewHolder(LongCardViewHolder holder, int position) {
         InventoryItem item = mInventoryList.get(position);
         holder.getItemImage().setImageResource(item.getImageResId());
         holder.getItemPrice().setText("$"+Double.toString(item.getPrice()));
+        holder.getItemName().setText(item.getName());
         holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
-
-
     }
 
     @Override

@@ -5,28 +5,31 @@ package villainyinc.schemedreams;
  */
 public class InventoryItem {
 
-    private String mName, mDescription, mCategory;
+    // The sku should be a 6 digit number stored in a string.
+    // The first 3 digits denote category. The last 3 digits denote the number in that category
+    private String mSku;
+    private String mName, mDescription;
     private int mImageResId;
     private double mPrice;
     private boolean mOnSale;
 
     public InventoryItem() {}
 
-    public InventoryItem(String name, String description, String category, double price, int imageResId) {
+    public InventoryItem(String name, String description, String sku, double price, int imageResId, boolean onSale) {
         mName = name;
         mDescription = description;
-        mCategory = category;
+        mSku = sku;
         mPrice = price;
         mImageResId = imageResId;
-        mOnSale = false;
+        mOnSale = onSale;
     }
 
-    public String getCategory() {
-        return mCategory;
+    public String getSku() {
+        return mSku;
     }
 
-    public void setCategory(String category) {
-        this.mCategory = category;
+    public void setSku(String category) {
+        this.mSku = category;
     }
 
     public String getDescription() {
