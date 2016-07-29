@@ -1,9 +1,13 @@
 package villainyinc.schemedreams;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,23 +30,58 @@ public class FragmentActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+// Checks to see if the a fragment exists, if it doesn't it adds one. If it does, it replaces it. Doesn't work exaclty like I want it to.
+        if (mSearchFragment == null) {
+            if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+                String query = getIntent().getStringExtra(SearchManager.QUERY);
+                mSearchFragment = SearchFragment.newInstance(DBHelper.getInstance(
+                        this.getApplicationContext()).getInventorySearch(query));
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container,
+                                mSearchFragment)
+                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        .disallowAddToBackStack()
+                        .commit();
             }
-        });
+            else {
+                mSearchFragment = SearchFragment.newInstance(getIntent().getStringArrayListExtra(StoreHomeActivity.SEARCH_QUERY));
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container,
+                                mSearchFragment)
+                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        .disallowAddToBackStack()
+                        .commit();
+            }
+        }
+        else {
+            if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+                String query = getIntent().getStringExtra(SearchManager.QUERY);
+                mSearchFragment = SearchFragment.newInstance(DBHelper.getInstance(
+                        this.getApplicationContext()).getInventorySearch(query));
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container,
+                                mSearchFragment)
+                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        .disallowAddToBackStack()
+                        .commit();
+            }
+            else {
+                mSearchFragment = SearchFragment.newInstance(getIntent().getStringArrayListExtra(StoreHomeActivity.SEARCH_QUERY));
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container,
+                                mSearchFragment)
+                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        .disallowAddToBackStack()
+                        .commit();
+            }
 
-        mSearchFragment = SearchFragment.newInstance(getIntent().getStringArrayListExtra("category"));
+        }
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container,
-                        mSearchFragment)
-                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                .commit();
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,7 +106,14 @@ public class FragmentActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.search, menu);
+        getMenuInflater().inflate(R.menu.fragment_activity, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        ComponentName componentName = new ComponentName(this, FragmentActivity.class);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName));
+
         return true;
     }
 
@@ -79,7 +125,9 @@ public class FragmentActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_cart) {
+            Intent intent = new Intent(this, CartActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -93,15 +141,59 @@ public class FragmentActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_lasers) {
-
+            mSearchFragment = SearchFragment.newInstance(DBHelper.getInstance(
+                    this.getApplicationContext()).getCategory("100"));
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container,
+                            mSearchFragment)
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .commit();
         } else if (id == R.id.nav_lairs) {
+            mSearchFragment = SearchFragment.newInstance(DBHelper.getInstance(
+                    this.getApplicationContext()).getCategory("200"));
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container,
+                            mSearchFragment)
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .commit();
 
         } else if (id == R.id.nav_traps) {
+            mSearchFragment = SearchFragment.newInstance(DBHelper.getInstance(
+                    this.getApplicationContext()).getCategory("300"));
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container,
+                            mSearchFragment)
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .commit();
 
         } else if (id == R.id.nav_henchmen) {
+            mSearchFragment = SearchFragment.newInstance(DBHelper.getInstance(
+                    this.getApplicationContext()).getCategory("400"));
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container,
+                            mSearchFragment)
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .commit();
 
         } else if (id == R.id.nav_monologues) {
+            mSearchFragment = SearchFragment.newInstance(DBHelper.getInstance(
+                    this.getApplicationContext()).getCategory("500"));
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container,
+                            mSearchFragment)
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .commit();
 
+        } else if (id == R.id.nav_home) {
+            Intent intent = new Intent(this, StoreHomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

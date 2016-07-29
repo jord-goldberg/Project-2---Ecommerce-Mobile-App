@@ -27,23 +27,109 @@
                 android:autoStart="true"
                 android:flipInterval="7000">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="230dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/lair_mountain" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="230dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/lair_island" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/trap_fire" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="230dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/lair_castle" />
+                    <TextView
+                        android:id="@+id/fire_flipper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Flame Jets"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="60dp"
+                        android:textSize="24sp"
+                        android:textColor="@android:color/primary_text_dark"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30% Hotter!"
+                        android:layout_below="@+id/fire_flipper"
+                        android:layout_marginLeft="25dp"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/primary_text_dark"
+                        />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/henchman_gangster" />
+
+                    <TextView
+                        android:id="@+id/gangster_flipper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Buy One Get One Free"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="20dp"
+                        android:paddingBottom="20dp"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/primary_text_dark"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:paddingBottom="45dp"
+                        android:paddingRight="85dp"
+                        android:text="Gangsters"
+                        android:textSize="24sp"
+                        android:textColor="@android:color/primary_text_dark"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/lair_mountain" />
+
+                    <TextView
+                        android:id="@+id/mountain_flipper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mountain Hideout"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="20dp"
+                        android:textSize="24sp"
+                        android:textColor="@android:color/primary_text_dark"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Now $2,000 Off"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/mountain_flipper"
+                        android:layout_marginRight="40dp"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/primary_text_dark"
+                        />
+
+                </RelativeLayout>
 
             </ViewFlipper>
 
@@ -54,9 +140,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
-            android:paddingLeft="30dp"
-            android:paddingBottom="12dp"
-            android:text="@string/category_1"
+            android:paddingLeft="16dp"
+            android:paddingBottom="8dp"
+            android:text="New to Villainy? Check out our Street-Level line:"
             android:textSize="16sp" />
 
         <ImageView
@@ -73,39 +159,65 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/categoryTitle_2"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView
+            android:id="@+id/advertisement_1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingLeft="30dp"
-            android:paddingBottom="12dp"
-            android:text="@string/category_2"
-            android:textSize="16sp" />
+            app:cardCornerRadius="0px"
+            app:cardElevation="@dimen/cardview_default_elevation"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="4dp"
-            android:background="#000000"
-            android:alpha=".38" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/homeRecycler_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:src="@drawable/monologue_paper"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/book_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="Need a\nKiller\nMonologue\nNow?"
+                    android:paddingRight="115dp"
+                    android:paddingBottom="10dp"
+                    android:textSize="17sp"
+                    android:textColor="@android:color/primary_text_light"
+                    android:alpha=".54"
+                    />
+
+                <TextView
+                    android:id="@+id/book_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="Look at\nOur\nCustom\nSelection!"
+                    android:paddingLeft="105dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="17sp"
+                    android:textColor="@android:color/primary_text_light"
+                    android:alpha=".54"
+                    />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
 
         <TextView
             android:id="@+id/categoryTitle_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingLeft="30dp"
-            android:paddingBottom="12dp"
-            android:text="@string/category_3"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="8dp"
+            android:text="Stepping up Your Game? Shop our Premium line:"
             android:textSize="16sp" />
 
         <ImageView
@@ -123,42 +235,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/categoryTitle_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingLeft="30dp"
-            android:paddingBottom="12dp"
-            android:text="@string/category_4"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="4dp"
-            android:background="#000000"
-            android:alpha=".38" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/homeRecycler_4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <android.support.v7.widget.CardView
+            android:id="@+id/advertisement_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="0px"
-            app:cardElevation="@dimen/cardview_default_elevation">
+            app:cardElevation="@dimen/cardview_default_elevation"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp">
 
-            <ImageView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/monologue_paper"/>
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/henchman_dog"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingLeft="8dp"
+                    android:text="Not Sure\nWhat to\nBuy?"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/primary_text_dark"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="Shop\nOur Entire\nCollection"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="8dp"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/primary_text_dark"
+                    />
+
+            </RelativeLayout>
 
         </android.support.v7.widget.CardView>
 

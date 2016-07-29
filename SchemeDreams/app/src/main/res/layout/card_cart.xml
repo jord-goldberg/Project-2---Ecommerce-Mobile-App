@@ -13,37 +13,28 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/long_card_image"
-            android:layout_width="match_parent"
+            android:id="@+id/cart_card_image"
+            android:layout_width="180dp"
             android:layout_height="140dp"
             android:scaleType="centerCrop"
             android:src="@drawable/laser_pointer"/>
 
         <TextView
-            android:id="@+id/long_card_name"
+            android:id="@+id/cart_card_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@android:color/primary_text_dark"
-            android:shadowColor="#000000"
-            android:shadowDx="0.0"
-            android:shadowDy="0.0"
-            android:shadowRadius="10.0"
+            android:textSize="16sp"
+            android:layout_toRightOf="@+id/cart_card_image"
             android:layout_margin="10dp"
             android:text="Name"/>
 
         <TextView
-            android:id="@+id/long_card_price"
+            android:id="@+id/cart_card_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:textSize="20sp"
-            android:textColor="@android:color/primary_text_dark"
-            android:shadowColor="#000000"
-            android:shadowDx="0.0"
-            android:shadowDy="0.0"
-            android:shadowRadius="10.0"
+            android:textSize="16sp"
             android:layout_margin="10dp"
             android:text="$49.99"/>
 

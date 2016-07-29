@@ -4,15 +4,15 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_cart">Shopping Cart</string>
+    <string name="action_search">Search</string>
+
     <string name="category_1">Lasers</string>
     <string name="category_2">Lairs</string>
     <string name="category_3">Traps</string>
     <string name="category_4">Henchmen</string>
     <string name="category_5">Monologues</string>
 
-    <string name="title_activity_search">Fragment Activity</string>
+    <string name="title_activity_search">Scheme Dreams</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

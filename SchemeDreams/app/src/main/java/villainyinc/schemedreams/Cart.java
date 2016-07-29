@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -13,10 +14,10 @@ import java.util.LinkedList;
 public class Cart {
 
     private static Cart mCart = null;
-    private static LinkedList<InventoryItem> mShoppingCart = new LinkedList<>();
+    private static ArrayList<InventoryItem> mShoppingCart = new ArrayList<>();
 
     private Cart() {
-        mShoppingCart = new LinkedList<InventoryItem>();
+        mShoppingCart = new ArrayList<InventoryItem>();
     }
 
     public static Cart getInstance() {
@@ -26,13 +27,15 @@ public class Cart {
         return mCart;
     }
 
-    public LinkedList<InventoryItem> getShoppingCart() {
+    public ArrayList<InventoryItem> getShoppingCart() {
         return mShoppingCart;
     }
 
     public void addItemToCart(InventoryItem item, View view){
+
         if (DBHelper.getInstance(view.getContext()).getItemCount(item) > 0) {
             mShoppingCart.add(item);
+            DBHelper.getInstance(view.getContext()).removeInventoryItem(item);
         }
         else {
             Snackbar.make(view, "Unfortunately, that item is out of stock.",
@@ -40,8 +43,9 @@ public class Cart {
         }
     }
 
-    public void removeItemFromCart(InventoryItem item) {
+    public void removeItemFromCart(InventoryItem item, View view) {
         mShoppingCart.remove(item);
+        DBHelper.getInstance(view.getContext()).insertInventoryItem(item);
     }
 
     public void emptyCart() {

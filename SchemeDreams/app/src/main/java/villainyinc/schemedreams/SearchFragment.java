@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 public class SearchFragment extends Fragment {
 
-    private static final String ARG_SEARCH = "search";
+    private static final String ARG_SEARCH = "searchResult";
 
     private ArrayList<InventoryItem> mInventoryList;
     private RecyclerView mRecycler;
@@ -56,7 +56,7 @@ public class SearchFragment extends Fragment {
         DBHelper db = DBHelper.getInstance(this.getContext());
         mInventoryList = new ArrayList<>();
         for (String sku : getArguments().getStringArrayList(ARG_SEARCH)) {
-            mInventoryList.add(db.getItemFromSku(sku));
+                mInventoryList.add(db.getItemFromSku(sku));
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(),
                 LinearLayoutManager.VERTICAL, false);

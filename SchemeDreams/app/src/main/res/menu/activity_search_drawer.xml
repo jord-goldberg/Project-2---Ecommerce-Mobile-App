@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group>
         <item
-            android:id="@+id/nav_lasers"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/category_1" />
-        <item
-            android:id="@+id/nav_lairs"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/category_2" />
-        <item
-            android:id="@+id/nav_traps"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/category_3" />
-        <item
-            android:id="@+id/nav_henchmen"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/category_4" />
-        <item
-            android:id="@+id/nav_monologues"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/category_5" />
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home_icon"
+            android:title="Home" />
     </group>
+
+    <item android:title="Shop by Category">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_lasers"
+                    android:icon="@drawable/laser_icon"
+                    android:title="@string/category_1" />
+                <item
+                    android:id="@+id/nav_lairs"
+                    android:icon="@drawable/lair_icon"
+                    android:title="@string/category_2" />
+                <item
+                    android:id="@+id/nav_traps"
+                    android:icon="@drawable/trap_icon"
+                    android:title="@string/category_3" />
+                <item
+                    android:id="@+id/nav_henchmen"
+                    android:icon="@drawable/henchmen_icon"
+                    android:title="@string/category_4" />
+                <item
+                    android:id="@+id/nav_monologues"
+                    android:icon="@drawable/monologue_icon"
+                    android:title="@string/category_5" />
+            </group>
+        </menu>
+    </item>
 
 </menu>
