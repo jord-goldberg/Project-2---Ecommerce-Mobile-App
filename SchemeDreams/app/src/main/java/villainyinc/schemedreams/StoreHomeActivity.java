@@ -53,35 +53,11 @@ public class StoreHomeActivity extends AppCompatActivity
 
 // checks to see if the database is empty. If so, it fills it.
         if (db.getInventory().isEmpty()) {
-            db.insertInventoryItem(new InventoryItem("Laser Pointer", "", "100100", 14.99, R.drawable.laser_pointer, false));
-            db.insertInventoryItem(new InventoryItem("Pew Pew Pistol", "", "100200", 349.99, R.drawable.laser_gun, true));
-            db.insertInventoryItem(new InventoryItem("Blaster", "", "100300", 834.95, R.drawable.laser_rifle, false));
-            db.insertInventoryItem(new InventoryItem("Doomsday Device", "", "100400", 21149.99, R.drawable.laser_doomsday, true));
-            db.insertInventoryItem(new InventoryItem("Star Smasher", "", "100500", 2350000.99, R.drawable.laser_deathstar, true));
-
-            db.insertInventoryItem(new InventoryItem("Mountain Hideout", "", "200300", 249999.99, R.drawable.lair_mountain, false));
-            db.insertInventoryItem(new InventoryItem("Island Getaway", "", "200200", 175999.99, R.drawable.lair_island, true));
-            db.insertInventoryItem(new InventoryItem("Office Space", "", "200100", 99999.99, R.drawable.lair_office, false));
-            db.insertInventoryItem(new InventoryItem("Space Office", "", "200500", 725999.99, R.drawable.lair_space, true));
-            db.insertInventoryItem(new InventoryItem("Castle Fortress", "", "200400", 249999.99, R.drawable.lair_castle, true));
-
-            db.insertInventoryItem(new InventoryItem("Mouse Trap", "", "300100", 3.49, R.drawable.trap_mouse, false));
-            db.insertInventoryItem(new InventoryItem("ACME Anvil", "", "300200", 189.95, R.drawable.trap_anvil, false));
-            db.insertInventoryItem(new InventoryItem("Flame Jet", "", "300300", 209.95, R.drawable.trap_fire, true));
-            db.insertInventoryItem(new InventoryItem("Spike Pit", "", "300400", 409.95, R.drawable.trap_spikes, true));
-            db.insertInventoryItem(new InventoryItem("Acid Bath", "", "300500", 1029.95, R.drawable.trap_acid, true));
-
-            db.insertInventoryItem(new InventoryItem("Help Desk Henchman", "", "400100", 64999.99, R.drawable.henchman_computer, false));
-            db.insertInventoryItem(new InventoryItem("Mutant Marauder", "", "400300", 19999.99, R.drawable.henchman_mutant, true));
-            db.insertInventoryItem(new InventoryItem("Gangster Cronie", "", "400200", 89999.99, R.drawable.henchman_gangster, true));
-            db.insertInventoryItem(new InventoryItem("Infantry Grunt", "", "400500", 99999.99, R.drawable.henchman_soldier, false));
-            db.insertInventoryItem(new InventoryItem("K9 Pupper", "", "400400", 24999.99, R.drawable.henchman_dog, true));
-
-            db.insertInventoryItem(new InventoryItem("Flashcards", "", "500200", 1009.95, R.drawable.monologue_flashcard, false));
-            db.insertInventoryItem(new InventoryItem("Pen & Paper", "", "500100", 999.95, R.drawable.monologue_paper, false));
-            db.insertInventoryItem(new InventoryItem("Audio Book", "", "500300", 1019.95, R.drawable.monologue_audio, false));
-            db.insertInventoryItem(new InventoryItem("Typewritten", "", "500400", 1049.95, R.drawable.monologue_typewriter, false));
-            db.insertInventoryItem(new InventoryItem("Kindle/eBook", "", "500500", 1149.95, R.drawable.monologue_kindle, false));
+            db.populateDB();
+            db.populateDB();
+            db.populateDB();
+            db.populateDB();
+            db.populateDB();
         }
 
 // Instantiates the viewflipper from content_store_home and sets animations for switching views

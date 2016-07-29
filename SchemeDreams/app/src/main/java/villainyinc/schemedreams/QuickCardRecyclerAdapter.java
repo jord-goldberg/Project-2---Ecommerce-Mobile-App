@@ -58,7 +58,7 @@ public class QuickCardRecyclerAdapter extends RecyclerView.Adapter<QuickCardView
                 builder.setPositiveButton("Add to Cart", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Cart.getInstance().addItemToCart(item, view);
+                        DBHelper.getInstance(view.getContext()).addItemToCart(item, view);
                     }
                 });
                 builder.setNegativeButton("Continue Shopping", new DialogInterface.OnClickListener() {

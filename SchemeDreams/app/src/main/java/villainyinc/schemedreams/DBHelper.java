@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -80,11 +82,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // if it does, get the current count of that item, add 1 and update the count column
         if (cursor.moveToFirst()) {
-            int count = cursor.getColumnIndex(COL_ITEM_COUNT);
+            int count = cursor.getInt(cursor.getColumnIndex(COL_ITEM_COUNT));
             ContentValues values = new ContentValues();
             values.put(COL_ITEM_COUNT, count+1);
             SQLiteDatabase db2 = getWritableDatabase();
-            db2.update(INVENTORY_TABLE_NAME, values, COL_ITEM_SKU + " = + ?", new String[]{sku});
+            db2.update(INVENTORY_TABLE_NAME, values, COL_ITEM_SKU + " = ?", new String[]{sku});
             db2.close();
         }
 
@@ -120,43 +122,75 @@ public class DBHelper extends SQLiteOpenHelper {
         String sku = item.getSku();
         Cursor cursor = db.query(INVENTORY_TABLE_NAME, new String[]{COL_ITEM_COUNT},
                 COL_ITEM_SKU + " = ? ", new String[]{sku}, null, null, null);
-
-        int count = cursor.getColumnIndex(COL_ITEM_COUNT);
+        cursor.moveToFirst();
+        int count = cursor.getInt(cursor.getColumnIndex(COL_ITEM_COUNT));
         ContentValues values = new ContentValues();
         values.put(COL_ITEM_COUNT, count-1);
         SQLiteDatabase db2 = getWritableDatabase();
-        db2.update(INVENTORY_TABLE_NAME, values, COL_ITEM_SKU + " = + ?", new String[]{sku});
+        db2.update(INVENTORY_TABLE_NAME, values, COL_ITEM_SKU + " = ?", new String[]{sku});
         db2.close();
     }
 
-    public void addItemToCart(InventoryItem item) {
+    public void addItemToCart(InventoryItem item, View view) {
 
-        // first check to see if the associated SKU already exists in the table
+     // Check to see if the item is in the working inventory
+        if (sInstance.getItemCount(item) > 0) {
+
+            // first check to see if the associated SKU already exists in the cart
+            SQLiteDatabase db = getReadableDatabase();
+            String sku = item.getSku();
+            Cursor cursor = db.query(CART_TABLE_NAME, new String[]{COL_CART_COUNT},
+                    COL_CART_SKU + " = ? ", new String[]{sku}, null, null, null);
+
+            // if it does, get the current count of that item, add 1 and update the count column
+            if (cursor.moveToFirst()) {
+                int count = cursor.getInt(cursor.getColumnIndex(COL_CART_COUNT));
+                ContentValues values = new ContentValues();
+                values.put(COL_CART_COUNT, count+1);
+                SQLiteDatabase db2 = getWritableDatabase();
+                db2.update(CART_TABLE_NAME, values, COL_CART_SKU + " = + ?", new String[]{sku});
+                db2.close();
+            }
+
+            // if it doesn't, add the values associated with the item to the table
+            else {
+                SQLiteDatabase db2 = getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(COL_CART_SKU, item.getSku());
+                values.put(COL_CART_COUNT, 1);
+                db2.insertOrThrow(CART_TABLE_NAME, null, values);
+                db2.close();
+            }
+            cursor.close();
+
+            // remove item from working inventory
+            sInstance.removeInventoryItem(item);
+        }
+
+    // if the item is not in the working inventory, let the customer know it's out fo stock
+        else {
+            Snackbar.make(view, "Unfortunately, that item is out of stock.",
+                    Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    public void removeItemFromCart(InventoryItem item) {
+
         SQLiteDatabase db = getReadableDatabase();
         String sku = item.getSku();
         Cursor cursor = db.query(CART_TABLE_NAME, new String[]{COL_CART_COUNT},
                 COL_CART_SKU + " = ? ", new String[]{sku}, null, null, null);
+        cursor.moveToFirst();
+        int count = cursor.getInt(cursor.getColumnIndex(COL_CART_COUNT));
+        ContentValues values = new ContentValues();
+        values.put(COL_CART_COUNT, count-1);
+        SQLiteDatabase db2 = getWritableDatabase();
+        db2.update(CART_TABLE_NAME, values, COL_CART_SKU + " = + ?", new String[]{sku});
+        db2.close();
 
-        // if it does, get the current count of that item, add 1 and update the count column
-        if (cursor.moveToFirst()) {
-            int count = cursor.getColumnIndex(COL_CART_COUNT);
-            ContentValues values = new ContentValues();
-            values.put(COL_CART_COUNT, count+1);
-            SQLiteDatabase db2 = getWritableDatabase();
-            db2.update(CART_TABLE_NAME, values, COL_CART_SKU + " = + ?", new String[]{sku});
-            db2.close();
-        }
+    // add the item back to working inventory
+        sInstance.insertInventoryItem(item);
 
-        // if it doesn't, add the values associated with the item to the table
-        else {
-            SQLiteDatabase db2 = getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(COL_CART_SKU, item.getSku());
-            values.put(COL_CART_COUNT, 1);
-            db2.insertOrThrow(CART_TABLE_NAME, null, values);
-            db2.close();
-        }
-        cursor.close();
     }
 
     public String getNameFromDB(String sku) {
@@ -292,6 +326,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return inventorySkus;
     }
 
+// Just like the above method but this will show only one product line (Last 3 digits of Sku represents line)
     public ArrayList<String> getProductLine(String last3IntsOfSku) {
 
         SQLiteDatabase db = getReadableDatabase();
@@ -310,6 +345,23 @@ public class DBHelper extends SQLiteOpenHelper {
         return inventorySkus;
     }
 
+    public ArrayList<String> getCartSkus() {
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(CART_TABLE_NAME, new String[]{COL_CART_SKU},
+                COL_CART_COUNT + " > 0 ", null, null, null, null);
+        ArrayList<String> cartSkus = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                cartSkus.add(cursor.getString(cursor.getColumnIndex(COL_CART_SKU)));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return cartSkus;
+    }
+
 // Returns an int that represents the number of that item in stock
     public int getItemCount(InventoryItem item) {
         SQLiteDatabase db = getReadableDatabase();
@@ -317,5 +369,53 @@ public class DBHelper extends SQLiteOpenHelper {
                 COL_ITEM_SKU + " = ? ", new String[]{item.getSku()}, null, null, null);
         cursor.moveToFirst();
         return cursor.getInt(cursor.getColumnIndex(COL_ITEM_COUNT));
+    }
+
+    public int getCartCount(InventoryItem item) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(CART_TABLE_NAME, new String[]{COL_CART_COUNT},
+                COL_CART_SKU + " = ? ", new String[]{item.getSku()}, null, null, null);
+        cursor.moveToFirst();
+        return cursor.getInt(cursor.getColumnIndex(COL_CART_COUNT));
+    }
+
+    public void checkOut() {
+        ContentValues values = new ContentValues();
+        values.put(COL_CART_COUNT, 0);
+        SQLiteDatabase db = getWritableDatabase();
+        db.update(CART_TABLE_NAME, values, null, null);
+        db.close();
+    }
+
+    public void populateDB() {
+        insertInventoryItem(new InventoryItem("Laser Pointer", "", "100100", 14.99, R.drawable.laser_pointer, false));
+        insertInventoryItem(new InventoryItem("Pew Pew Pistol", "", "100200", 349.99, R.drawable.laser_gun, true));
+        insertInventoryItem(new InventoryItem("Blaster", "", "100300", 834.95, R.drawable.laser_rifle, false));
+        insertInventoryItem(new InventoryItem("Doomsday Device", "", "100400", 21149.99, R.drawable.laser_doomsday, true));
+        insertInventoryItem(new InventoryItem("Star Smasher", "", "100500", 2350000.99, R.drawable.laser_deathstar, true));
+
+        insertInventoryItem(new InventoryItem("Mountain Hideout", "", "200300", 249999.99, R.drawable.lair_mountain, false));
+        insertInventoryItem(new InventoryItem("Island Getaway", "", "200200", 175999.99, R.drawable.lair_island, true));
+        insertInventoryItem(new InventoryItem("Office Space", "", "200100", 99999.99, R.drawable.lair_office, false));
+        insertInventoryItem(new InventoryItem("Space Office", "", "200500", 725999.99, R.drawable.lair_space, true));
+        insertInventoryItem(new InventoryItem("Castle Fortress", "", "200400", 249999.99, R.drawable.lair_castle, true));
+
+        insertInventoryItem(new InventoryItem("Mouse Trap", "", "300100", 3.49, R.drawable.trap_mouse, false));
+        insertInventoryItem(new InventoryItem("ACME Anvil", "", "300200", 189.95, R.drawable.trap_anvil, false));
+        insertInventoryItem(new InventoryItem("Flame Jet", "", "300300", 209.95, R.drawable.trap_fire, true));
+        insertInventoryItem(new InventoryItem("Spike Pit", "", "300400", 409.95, R.drawable.trap_spikes, true));
+        insertInventoryItem(new InventoryItem("Acid Bath", "", "300500", 1029.95, R.drawable.trap_acid, true));
+
+        insertInventoryItem(new InventoryItem("Help Desk Henchman", "", "400100", 64999.99, R.drawable.henchman_computer, false));
+        insertInventoryItem(new InventoryItem("Mutant Marauder", "", "400300", 19999.99, R.drawable.henchman_mutant, true));
+        insertInventoryItem(new InventoryItem("Gangster Cronie", "", "400200", 89999.99, R.drawable.henchman_gangster, true));
+        insertInventoryItem(new InventoryItem("Infantry Grunt", "", "400500", 99999.99, R.drawable.henchman_soldier, false));
+        insertInventoryItem(new InventoryItem("K9 Pupper", "", "400400", 24999.99, R.drawable.henchman_dog, true));
+
+        insertInventoryItem(new InventoryItem("Flashcards", "", "500200", 1009.95, R.drawable.monologue_flashcard, false));
+        insertInventoryItem(new InventoryItem("Pen & Paper", "", "500100", 999.95, R.drawable.monologue_paper, false));
+        insertInventoryItem(new InventoryItem("Audio Book", "", "500300", 1019.95, R.drawable.monologue_audio, false));
+        insertInventoryItem(new InventoryItem("Typewritten", "", "500400", 1049.95, R.drawable.monologue_typewriter, false));
+        insertInventoryItem(new InventoryItem("Kindle/eBook", "", "500500", 1149.95, R.drawable.monologue_kindle, false));
     }
 }

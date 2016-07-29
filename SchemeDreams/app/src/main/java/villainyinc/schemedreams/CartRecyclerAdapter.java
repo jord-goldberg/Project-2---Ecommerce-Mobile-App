@@ -29,15 +29,29 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartViewHolder> {
 
     @Override
     public void onBindViewHolder(CartViewHolder holder, int position) {
-        InventoryItem item = mInventoryList.get(position);
+        final InventoryItem item = mInventoryList.get(position);
         DecimalFormat formatter = new DecimalFormat("###,###,###.##");
+        final DBHelper db = DBHelper.getInstance(holder.getDecrease().getContext());
         holder.getItemImage().setImageResource(item.getImageResId());
+        holder.getItemCount().setText(Integer.toString(db.getCartCount(item)));
         holder.getItemName().setText(item.getName());
-        holder.getItemPrice().setText("$"+formatter.format(item.getPrice()));
-        holder.setOnClickListener(new View.OnClickListener() {
+        holder.getItemPrice().setText("$"+formatter.format(item.getPrice() * db.getCartCount(item)));
+        holder.getIncrease().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                db.addItemToCart(item, view);
+                notifyDataSetChanged();
+            }
+        });
+        holder.getDecrease().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.removeItemFromCart(item);
+                notifyDataSetChanged();
+                if (db.getCartCount(item) == 0) {
+                    mInventoryList.remove(item);
+                    notifyDataSetChanged();
+                }
             }
         });
 
