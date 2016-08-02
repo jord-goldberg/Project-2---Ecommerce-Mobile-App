@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class CartActivity extends AppCompatActivity {
 
     CardView mCheckOut;
-    TextView mTotal;
     RecyclerView mCartRecycler;
 
     @Override

@@ -28,8 +28,8 @@ public class InventoryItem {
         return mSku;
     }
 
-    public void setSku(String category) {
-        this.mSku = category;
+    public void setSku(String sku) {
+        this.mSku = sku;
     }
 
     public String getDescription() {

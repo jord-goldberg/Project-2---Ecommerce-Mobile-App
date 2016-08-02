@@ -136,7 +136,7 @@ public class DBHelper extends SQLiteOpenHelper {
      // Check to see if the item is in the working inventory
         if (sInstance.getItemCount(item) > 0) {
 
-            // first check to see if the associated SKU already exists in the cart
+            // check to see if the associated SKU already exists in the cart
             SQLiteDatabase db = getReadableDatabase();
             String sku = item.getSku();
             Cursor cursor = db.query(CART_TABLE_NAME, new String[]{COL_CART_COUNT},
@@ -167,7 +167,7 @@ public class DBHelper extends SQLiteOpenHelper {
             sInstance.removeInventoryItem(item);
         }
 
-    // if the item is not in the working inventory, let the customer know it's out fo stock
+    // if the item is not in the working inventory, let the customer know it's out of stock
         else {
             Snackbar.make(view, "Unfortunately, that item is out of stock.",
                     Snackbar.LENGTH_LONG).show();
@@ -388,34 +388,34 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void populateDB() {
-        insertInventoryItem(new InventoryItem("Laser Pointer", "", "100100", 14.99, R.drawable.laser_pointer, false));
-        insertInventoryItem(new InventoryItem("Pew Pew Pistol", "", "100200", 349.99, R.drawable.laser_gun, true));
-        insertInventoryItem(new InventoryItem("Blaster", "", "100300", 834.95, R.drawable.laser_rifle, false));
-        insertInventoryItem(new InventoryItem("Doomsday Device", "", "100400", 21149.99, R.drawable.laser_doomsday, true));
-        insertInventoryItem(new InventoryItem("Star Smasher", "", "100500", 2350000.99, R.drawable.laser_deathstar, true));
+        insertInventoryItem(new InventoryItem("Laser Pointer", "Purrfect for playing with cats!", "100100", 14.99, R.drawable.laser_pointer, false));
+        insertInventoryItem(new InventoryItem("Pew Pew Pistol", "Pew Pew! For the space cadet villain!", "100200", 349.99, R.drawable.laser_gun, true));
+        insertInventoryItem(new InventoryItem("Blaster", "These devices tend to miss. Perfect for the standard henchman!", "100300", 834.95, R.drawable.laser_rifle, false));
+        insertInventoryItem(new InventoryItem("Doomsday Device", "Standard issue for the supervillain on the go!", "100400", 21149.99, R.drawable.laser_doomsday, true));
+        insertInventoryItem(new InventoryItem("Star Smasher", "Please don't sue me.", "100500", 2350000.99, R.drawable.laser_deathstar, true));
 
-        insertInventoryItem(new InventoryItem("Mountain Hideout", "", "200300", 249999.99, R.drawable.lair_mountain, false));
-        insertInventoryItem(new InventoryItem("Island Getaway", "", "200200", 175999.99, R.drawable.lair_island, true));
-        insertInventoryItem(new InventoryItem("Office Space", "", "200100", 99999.99, R.drawable.lair_office, false));
-        insertInventoryItem(new InventoryItem("Space Office", "", "200500", 725999.99, R.drawable.lair_space, true));
-        insertInventoryItem(new InventoryItem("Castle Fortress", "", "200400", 249999.99, R.drawable.lair_castle, true));
+        insertInventoryItem(new InventoryItem("Mountain Hideout", "A cozy mountain chateau for the villain on the go.", "200300", 249999.99, R.drawable.lair_mountain, false));
+        insertInventoryItem(new InventoryItem("Island Getaway", "A romantic island escape for you and your princess prisoner", "200200", 175999.99, R.drawable.lair_island, true));
+        insertInventoryItem(new InventoryItem("Office Space", "Be a boss that deserves the hate you're sure to get.", "200100", 99999.99, R.drawable.lair_office, false));
+        insertInventoryItem(new InventoryItem("Space Office", "Your standard villain HQ... but in space!", "200500", 725999.99, R.drawable.lair_space, true));
+        insertInventoryItem(new InventoryItem("Castle Fortress", "Being chased by an army of heroes? Take shelter behind these walls.", "200400", 249999.99, R.drawable.lair_castle, true));
 
-        insertInventoryItem(new InventoryItem("Mouse Trap", "", "300100", 3.49, R.drawable.trap_mouse, false));
-        insertInventoryItem(new InventoryItem("ACME Anvil", "", "300200", 189.95, R.drawable.trap_anvil, false));
-        insertInventoryItem(new InventoryItem("Flame Jet", "", "300300", 209.95, R.drawable.trap_fire, true));
-        insertInventoryItem(new InventoryItem("Spike Pit", "", "300400", 409.95, R.drawable.trap_spikes, true));
-        insertInventoryItem(new InventoryItem("Acid Bath", "", "300500", 1029.95, R.drawable.trap_acid, true));
+        insertInventoryItem(new InventoryItem("Mouse Trap", "Perfect defense against Mighty Mouse.", "300100", 3.49, R.drawable.trap_mouse, false));
+        insertInventoryItem(new InventoryItem("ACME Anvil", "Have a coyote chasing you down? Pick up a few of these!", "300200", 189.95, R.drawable.trap_anvil, false));
+        insertInventoryItem(new InventoryItem("Flame Jet", "Broil your enemies or a Filet Mignon!", "300300", 209.95, R.drawable.trap_fire, true));
+        insertInventoryItem(new InventoryItem("Spike Pit", "Careful not to accidentally fall into this one.", "300400", 409.95, R.drawable.trap_spikes, true));
+        insertInventoryItem(new InventoryItem("Acid Bath", "Exfoliate x1000", "300500", 1029.95, R.drawable.trap_acid, true));
 
-        insertInventoryItem(new InventoryItem("Help Desk Henchman", "", "400100", 64999.99, R.drawable.henchman_computer, false));
-        insertInventoryItem(new InventoryItem("Mutant Marauder", "", "400300", 19999.99, R.drawable.henchman_mutant, true));
-        insertInventoryItem(new InventoryItem("Gangster Cronie", "", "400200", 89999.99, R.drawable.henchman_gangster, true));
-        insertInventoryItem(new InventoryItem("Infantry Grunt", "", "400500", 99999.99, R.drawable.henchman_soldier, false));
-        insertInventoryItem(new InventoryItem("K9 Pupper", "", "400400", 24999.99, R.drawable.henchman_dog, true));
+        insertInventoryItem(new InventoryItem("Help Desk Henchman", "Have you tried turning it off and on again?", "400100", 64999.99, R.drawable.henchman_computer, false));
+        insertInventoryItem(new InventoryItem("Mutant Marauder", "Oog smash good!", "400300", 19999.99, R.drawable.henchman_mutant, true));
+        insertInventoryItem(new InventoryItem("Gangster Cronie", "Eh, sleep with the fishes, see?", "400200", 89999.99, R.drawable.henchman_gangster, true));
+        insertInventoryItem(new InventoryItem("Infantry Grunt", "They used to fight for freedom; now they fight for you!", "400500", 99999.99, R.drawable.henchman_soldier, false));
+        insertInventoryItem(new InventoryItem("K9 Doggo", "A big ol' pupper", "400400", 24999.99, R.drawable.henchman_dog, true));
 
-        insertInventoryItem(new InventoryItem("Flashcards", "", "500200", 1009.95, R.drawable.monologue_flashcard, false));
-        insertInventoryItem(new InventoryItem("Pen & Paper", "", "500100", 999.95, R.drawable.monologue_paper, false));
-        insertInventoryItem(new InventoryItem("Audio Book", "", "500300", 1019.95, R.drawable.monologue_audio, false));
-        insertInventoryItem(new InventoryItem("Typewritten", "", "500400", 1049.95, R.drawable.monologue_typewriter, false));
-        insertInventoryItem(new InventoryItem("Kindle/eBook", "", "500500", 1149.95, R.drawable.monologue_kindle, false));
+        insertInventoryItem(new InventoryItem("Flashcards", "Need to practice your Monologuing discreetly? Pick these up!", "500200", 1009.95, R.drawable.monologue_flashcard, false));
+        insertInventoryItem(new InventoryItem("Pen & Paper", "For the villain who hates to change", "500100", 999.95, R.drawable.monologue_paper, false));
+        insertInventoryItem(new InventoryItem("Audio Book", "Are you an auditory learner? Pick up your monologue on tape!", "500300", 1019.95, R.drawable.monologue_audio, false));
+        insertInventoryItem(new InventoryItem("Typewritten", "Facing hipster heroes? They'll love your typewritten monologue!", "500400", 1049.95, R.drawable.monologue_typewriter, false));
+        insertInventoryItem(new InventoryItem("Kindle/eBook", "For the modern schemer", "500500", 1149.95, R.drawable.monologue_kindle, false));
     }
 }

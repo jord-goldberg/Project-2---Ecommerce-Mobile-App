@@ -30,7 +30,7 @@ public class FragmentActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-// Checks to see if the a fragment exists, if it doesn't it adds one. If it does, it replaces it. Doesn't work exaclty like I want it to.
+// Checks to see if the a fragment exists, if it doesn't it adds one. If it does, it replaces it. Doesn't work exactly like I want it to.
         if (mSearchFragment == null) {
             if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
                 String query = getIntent().getStringExtra(SearchManager.QUERY);
