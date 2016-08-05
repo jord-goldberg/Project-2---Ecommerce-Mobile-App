@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class CartRecyclerAdapter extends RecyclerView.Adapter<CartViewHolder> {
 
-    ArrayList<InventoryItem> mInventoryList;
+    ArrayList<InventoryItem> mInventoryList = new ArrayList<>();
 
     public CartRecyclerAdapter(ArrayList<InventoryItem> inventoryList) {
         mInventoryList = inventoryList;

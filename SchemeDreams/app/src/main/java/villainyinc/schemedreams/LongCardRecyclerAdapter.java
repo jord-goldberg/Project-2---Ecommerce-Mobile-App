@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class LongCardRecyclerAdapter extends RecyclerView.Adapter<LongCardViewHolder> {
 
-    ArrayList<InventoryItem> mInventoryList;
+    ArrayList<InventoryItem> mInventoryList = new ArrayList<>();
 
     public LongCardRecyclerAdapter(ArrayList<InventoryItem> inventoryList) {
         mInventoryList = inventoryList;

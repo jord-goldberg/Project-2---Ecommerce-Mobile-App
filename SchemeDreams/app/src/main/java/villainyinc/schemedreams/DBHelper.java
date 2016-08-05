@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
@@ -71,26 +72,26 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-// Add an inventory Item to the database
+    // Add an inventory Item to the database
     public void insertInventoryItem(InventoryItem item) {
 
-    // first check to see if the associated SKU already exists in the table
+        // first check to see if the associated SKU already exists in the table
         SQLiteDatabase db = getReadableDatabase();
         String sku = item.getSku();
         Cursor cursor = db.query(INVENTORY_TABLE_NAME, new String[]{COL_ITEM_COUNT},
                 COL_ITEM_SKU + " = ? ", new String[]{sku}, null, null, null);
 
-    // if it does, get the current count of that item, add 1 and update the count column
+        // if it does, get the current count of that item, add 1 and update the count column
         if (cursor.moveToFirst()) {
             int count = cursor.getInt(cursor.getColumnIndex(COL_ITEM_COUNT));
             ContentValues values = new ContentValues();
-            values.put(COL_ITEM_COUNT, count+1);
+            values.put(COL_ITEM_COUNT, count + 1);
             SQLiteDatabase db2 = getWritableDatabase();
             db2.update(INVENTORY_TABLE_NAME, values, COL_ITEM_SKU + " = ?", new String[]{sku});
             db2.close();
         }
 
-    // if it doesn't, add the values associated with the item to the table
+        // if it doesn't, add the values associated with the item to the table
         else {
             SQLiteDatabase db2 = getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -101,12 +102,11 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(COL_ITEM_IMAGE, item.getImageResId());
             values.put(COL_ITEM_COUNT, 1);
 
-        // SQLite can't store boolean values. If the item is on sale, it's stored as a 1. If not, a 0.
+            // SQLite can't store boolean values. If the item is on sale, it's stored as a 1. If not, a 0.
             int onSale;
             if (item.isOnSale()) {
                 onSale = 1;
-            }
-            else {
+            } else {
                 onSale = 0;
             }
             values.put(COL_ITEM_SALE, onSale);
@@ -125,7 +125,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         int count = cursor.getInt(cursor.getColumnIndex(COL_ITEM_COUNT));
         ContentValues values = new ContentValues();
-        values.put(COL_ITEM_COUNT, count-1);
+        values.put(COL_ITEM_COUNT, count - 1);
         SQLiteDatabase db2 = getWritableDatabase();
         db2.update(INVENTORY_TABLE_NAME, values, COL_ITEM_SKU + " = ?", new String[]{sku});
         db2.close();
@@ -133,7 +133,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void addItemToCart(InventoryItem item, View view) {
 
-     // Check to see if the item is in the working inventory
+        // Check to see if the item is in the working inventory
         if (sInstance.getItemCount(item) > 0) {
 
             // check to see if the associated SKU already exists in the cart
@@ -146,7 +146,7 @@ public class DBHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 int count = cursor.getInt(cursor.getColumnIndex(COL_CART_COUNT));
                 ContentValues values = new ContentValues();
-                values.put(COL_CART_COUNT, count+1);
+                values.put(COL_CART_COUNT, count + 1);
                 SQLiteDatabase db2 = getWritableDatabase();
                 db2.update(CART_TABLE_NAME, values, COL_CART_SKU + " = + ?", new String[]{sku});
                 db2.close();
@@ -167,7 +167,7 @@ public class DBHelper extends SQLiteOpenHelper {
             sInstance.removeInventoryItem(item);
         }
 
-    // if the item is not in the working inventory, let the customer know it's out of stock
+        // if the item is not in the working inventory, let the customer know it's out of stock
         else {
             Snackbar.make(view, "Unfortunately, that item is out of stock.",
                     Snackbar.LENGTH_LONG).show();
@@ -183,12 +183,12 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         int count = cursor.getInt(cursor.getColumnIndex(COL_CART_COUNT));
         ContentValues values = new ContentValues();
-        values.put(COL_CART_COUNT, count-1);
+        values.put(COL_CART_COUNT, count - 1);
         SQLiteDatabase db2 = getWritableDatabase();
         db2.update(CART_TABLE_NAME, values, COL_CART_SKU + " = + ?", new String[]{sku});
         db2.close();
 
-    // add the item back to working inventory
+        // add the item back to working inventory
         sInstance.insertInventoryItem(item);
 
     }
@@ -249,8 +249,8 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-// Uses a Sku and the previous 5 methods to return an object
-    public InventoryItem getItemFromSku (String sku) {
+    // Uses a Sku and the previous 5 methods to return an object
+    public InventoryItem getItemFromSku(String sku) {
         String name = getNameFromDB(sku);
         String description = getDescriptionFromDB(sku);
         int imageResId = getImageFromDB(sku);
@@ -260,7 +260,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return new InventoryItem(name, description, sku, price, imageResId, onSale);
     }
 
-    public ArrayList<InventoryItem> getItemListFromSkuList (ArrayList<String> skuList) {
+    public ArrayList<InventoryItem> getItemListFromSkuList(ArrayList<String> skuList) {
         ArrayList<InventoryItem> inventoryList = new ArrayList<>();
         for (String sku : skuList) {
             inventoryList.add(sInstance.getItemFromSku(sku));
@@ -268,16 +268,16 @@ public class DBHelper extends SQLiteOpenHelper {
         return inventoryList;
     }
 
-// Get a list containing the Skus of all InventoryItem objects
+    // Get a list containing the Skus of all InventoryItem objects
     public ArrayList<String> getInventory() {
 
-    // Get a cursor containing all Skus & create a list to return the results
+        // Get a cursor containing all Skus & create a list to return the results
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(INVENTORY_TABLE_NAME, new String[]{COL_ITEM_SKU},
                 COL_ITEM_COUNT + " > 0", null, null, null, null);
         ArrayList<String> inventorySkus = new ArrayList<>();
 
-    // Run through the cursor adding a Sku to the list at every position
+        // Run through the cursor adding a Sku to the list at every position
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 inventorySkus.add(cursor.getString(cursor.getColumnIndex(COL_ITEM_SKU)));
@@ -288,13 +288,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return inventorySkus;
     }
 
-// Just like the above method but this takes in a string and searches names and descriptions for matches
+    // Just like the above method but this takes in a string and searches names and descriptions for matches
     public ArrayList<String> getInventorySearch(String search) {
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(INVENTORY_TABLE_NAME, new String[]{COL_ITEM_SKU},
                 COL_ITEM_NAME + " LIKE ? OR " + COL_ITEM_DESCRIPTION + " LIKE ? ",
-                new String[]{"%"+search+"%", "%"+search+"%"}, null, null, null);
+                new String[]{"%" + search + "%", "%" + search + "%"}, null, null, null);
         ArrayList<String> inventorySkus = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
@@ -307,12 +307,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return inventorySkus;
     }
 
-// Just like the above method but this will show only one category (First 3 digits of Sku represents category)
+    // Just like the above method but this will show only one category (First 3 digits of Sku represents category)
     public ArrayList<String> getCategory(String first3IntsOfSku) {
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(INVENTORY_TABLE_NAME, new String[]{COL_ITEM_SKU},
-                COL_ITEM_SKU + " LIKE ? ", new String[]{first3IntsOfSku+"%"},
+                COL_ITEM_SKU + " LIKE ? ", new String[]{first3IntsOfSku + "%"},
                 null, null, null);
         ArrayList<String> inventorySkus = new ArrayList<>();
 
@@ -326,12 +326,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return inventorySkus;
     }
 
-// Just like the above method but this will show only one product line (Last 3 digits of Sku represents line)
+    // Just like the above method but this will show only one product line (Last 3 digits of Sku represents line)
     public ArrayList<String> getProductLine(String last3IntsOfSku) {
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(INVENTORY_TABLE_NAME, new String[]{COL_ITEM_SKU},
-                COL_ITEM_SKU + " LIKE ? ", new String[]{"%"+last3IntsOfSku},
+                COL_ITEM_SKU + " LIKE ? ", new String[]{"%" + last3IntsOfSku},
                 null, null, null);
         ArrayList<String> inventorySkus = new ArrayList<>();
 
@@ -362,7 +362,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return cartSkus;
     }
 
-// Returns an int that represents the number of that item in stock
+    // Returns an int that represents the number of that item in stock
     public int getItemCount(InventoryItem item) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(INVENTORY_TABLE_NAME, new String[]{COL_ITEM_COUNT},
@@ -388,6 +388,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void populateDB() {
+
         insertInventoryItem(new InventoryItem("Laser Pointer", "Purrfect for playing with cats!", "100100", 14.99, R.drawable.laser_pointer, false));
         insertInventoryItem(new InventoryItem("Pew Pew Pistol", "Pew Pew! For the space cadet villain!", "100200", 349.99, R.drawable.laser_gun, true));
         insertInventoryItem(new InventoryItem("Blaster", "These devices tend to miss. Perfect for the standard henchman!", "100300", 834.95, R.drawable.laser_rifle, false));
@@ -403,7 +404,7 @@ public class DBHelper extends SQLiteOpenHelper {
         insertInventoryItem(new InventoryItem("Mouse Trap", "Perfect defense against Mighty Mouse.", "300100", 3.49, R.drawable.trap_mouse, false));
         insertInventoryItem(new InventoryItem("ACME Anvil", "Have a coyote chasing you down? Pick up a few of these!", "300200", 189.95, R.drawable.trap_anvil, false));
         insertInventoryItem(new InventoryItem("Flame Jet", "Broil your enemies or a Filet Mignon!", "300300", 209.95, R.drawable.trap_fire, true));
-        insertInventoryItem(new InventoryItem("Spike Pit", "Careful not to accidentally fall into this one.", "300400", 409.95, R.drawable.trap_spikes, true));
+        insertInventoryItem(new InventoryItem("Spike Pit", "For the villain with a cutting sense of humor.", "300400", 409.95, R.drawable.trap_spikes, true));
         insertInventoryItem(new InventoryItem("Acid Bath", "Exfoliate x1000", "300500", 1029.95, R.drawable.trap_acid, true));
 
         insertInventoryItem(new InventoryItem("Help Desk Henchman", "Have you tried turning it off and on again?", "400100", 64999.99, R.drawable.henchman_computer, false));

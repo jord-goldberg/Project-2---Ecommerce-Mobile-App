@@ -2,6 +2,7 @@ package villainyinc.schemedreams;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -52,16 +53,29 @@ public class SearchFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        DBHelper db = DBHelper.getInstance(this.getContext());
-        mInventoryList = new ArrayList<>();
-        for (String sku : getArguments().getStringArrayList(ARG_SEARCH)) {
-            mInventoryList.add(db.getItemFromSku(sku));
-        }
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(),
-                LinearLayoutManager.VERTICAL, false);
-        LongCardRecyclerAdapter cardRecyclerAdapter = new LongCardRecyclerAdapter(mInventoryList);
-        mRecycler.setLayoutManager(linearLayoutManager);
-        mRecycler.setAdapter(cardRecyclerAdapter);
         super.onViewCreated(view, savedInstanceState);
+
+        new AsyncTask<String, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(String... strings) {
+                DBHelper db = DBHelper.getInstance(getContext());
+                mInventoryList = new ArrayList<>();
+                for (String sku : getArguments().getStringArrayList(strings[0])) {
+                    mInventoryList.add(db.getItemFromSku(sku));
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
+                        LinearLayoutManager.VERTICAL, false);
+                LongCardRecyclerAdapter cardRecyclerAdapter = new LongCardRecyclerAdapter(mInventoryList);
+                mRecycler.setLayoutManager(linearLayoutManager);
+                mRecycler.setAdapter(cardRecyclerAdapter);
+            }
+        }.execute(ARG_SEARCH);
     }
 }

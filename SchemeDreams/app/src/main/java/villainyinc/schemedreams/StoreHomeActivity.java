@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
@@ -34,6 +35,9 @@ public class StoreHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String SEARCH_QUERY = "search";
+
+    QuickCardRecyclerAdapter mAdapter1;
+    QuickCardRecyclerAdapter mAdapter3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,23 +70,38 @@ public class StoreHomeActivity extends AppCompatActivity
         flipper.setOutAnimation(this, android.R.anim.slide_out_right);
 
 // Sets up the 2 recyclerViews
-        RecyclerView categoryRecycler1 = (RecyclerView) findViewById(R.id.homeRecycler_1);
-        RecyclerView categoryRecycler3 = (RecyclerView) findViewById(R.id.homeRecycler_3);
+        final RecyclerView categoryRecycler1 = (RecyclerView) findViewById(R.id.homeRecycler_1);
+        final RecyclerView categoryRecycler3 = (RecyclerView) findViewById(R.id.homeRecycler_3);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false);
         LinearLayoutManager layoutManager3 = new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false);
         categoryRecycler1.setLayoutManager(layoutManager);
         categoryRecycler3.setLayoutManager(layoutManager3);
-        QuickCardRecyclerAdapter cardRecyclerAdapter1 = new QuickCardRecyclerAdapter(db.getItemListFromSkuList(db.getProductLine("100")));
-        QuickCardRecyclerAdapter cardRecyclerAdapter3 = new QuickCardRecyclerAdapter(db.getItemListFromSkuList(db.getProductLine("500")));
-        categoryRecycler1.setAdapter(cardRecyclerAdapter1);
-        categoryRecycler3.setAdapter(cardRecyclerAdapter3);
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                mAdapter1 = new QuickCardRecyclerAdapter(db.getItemListFromSkuList(db.getProductLine("100")));
+                mAdapter3 = new QuickCardRecyclerAdapter(db.getItemListFromSkuList(db.getProductLine("500")));
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                categoryRecycler1.setAdapter(mAdapter1);
+                categoryRecycler3.setAdapter(mAdapter3);
+            }
+        }.execute();
+
+
 
 // Rotates the text on the first advertisement
         TextView bookLeft = (TextView) findViewById(R.id.book_left);
         TextView bookRight = (TextView) findViewById(R.id.book_right);
-        RotateAnimation rotate= (RotateAnimation) AnimationUtils.loadAnimation(this,R.anim.rotate_text);
+        RotateAnimation rotate = (RotateAnimation) AnimationUtils.loadAnimation(this, R.anim.rotate_text);
         bookLeft.setAnimation(rotate);
         bookRight.setAnimation(rotate);
 
